@@ -34,6 +34,9 @@ simple_mode_button = Button(200, 250, 360, 80, "SIMPLE MODE", SIMPLE_MODE_BUTTON
 ultimate_mode_button = Button(200, 340, 360, 80, "ULTIMATE TIC TAC TOE", MODIFIED_MODE_BUTTON_COLOR, MODIFIED_MODE_BUTTON_HOVER_COLOR, BUTTON_FONT)
 player_mode_button = Button(200, 250, 340, 80, "PLAYER VS PLAYER", PLAYER_MODE_BUTTON_COLOR, PLAYER_MODE_BUTTON_HOVER_COLOR, BUTTON_FONT)
 computer_mode_button = Button(200, 340, 340, 80, "COMPUTER VS PLAYER", COMPUTER_MODE_BUTTON_COLOR, COMPUTER_MODE_BUTTON_HOVER_COLOR, BUTTON_FONT)
+easy_mode_button = Button(200, 150, 340, 80, "EASY MODE", EASY_MODE_BUTTON_COLOR, EASY_MODE_BUTTON_HOVER_COLOR, BUTTON_FONT)
+medium_mode_button = Button(200, 250, 340, 80, "MEDIUM MODE", MEDIUM_BUTTON_COLOR, MEDIUM_BUTTON_HOVER_COLOR, BUTTON_FONT)
+hard_mode_button = Button(200, 350, 340, 80, "HARD MODE", HARD_MODE_BUTTON_COLOR, HARD_MODE_BUTTON_HOVER_COLOR, BUTTON_FONT)
 
 state_m = "start"
 game = Game(draw_surface)
@@ -67,12 +70,30 @@ while is_running:
                     print("PLAYER MODE")
                 elif computer_mode_button.is_clicked(mouse_position):
                     print("COMPUTER MODE")
+                    state_m = "computer_simple_difficulty"
+                    
+            elif state_m == "computer_simple_difficulty":
+                if easy_mode_button.is_clicked(mouse_position):
+                    print("EASY MODE!")
+                elif medium_mode_button.is_clicked(mouse_position):
+                    print("MEDIUM MODE!")
+                elif hard_mode_button.is_clicked(mouse_position):
+                    print("HARD MODE!")
                     
             elif state_m == "game_ultimate_mode":
                 if player_mode_button.is_clicked(mouse_position):
                     print("PLAYER MODE") 
                 elif computer_mode_button.is_clicked(mouse_position):
                     print("COMPUTER MODE")
+                    state_m = "computer_ultimate_difficulty"
+                        
+            elif state_m == "computer_ultimate_difficulty":
+                if easy_mode_button.is_clicked(mouse_position):
+                    print("EASY MODE!")
+                elif medium_mode_button.is_clicked(mouse_position):
+                    print("MEDIUM MODE!")
+                elif hard_mode_button.is_clicked(mouse_position):
+                    print("HARD MODE!")
 
                     
                             
@@ -91,6 +112,16 @@ while is_running:
     elif state_m == "game_ultimate_mode":
         player_mode_button.button_update(mouse_position)
         computer_mode_button.button_update(mouse_position)
+        
+    elif state_m == "computer_simple_difficulty":
+        easy_mode_button.button_update(mouse_position)
+        medium_mode_button.button_update(mouse_position)
+        hard_mode_button.button_update(mouse_position)
+        
+    elif state_m == "computer_ultimate_difficulty":
+        easy_mode_button.button_update(mouse_position)
+        medium_mode_button.button_update(mouse_position)
+        hard_mode_button.button_update(mouse_position)
 
     # screen.fill(DARK_NAVY)
 
@@ -133,7 +164,26 @@ while is_running:
         screen.blit(header, (x_header_position, y_header_position))
         player_mode_button.draw_button_sets(screen)
         computer_mode_button.draw_button_sets(screen)
+        
+    elif state_m == "computer_simple_difficulty":
+        header = Header_title.render("COMPUTER DIFFICULTY", True, WHITE)
 
+        x_header_position = 50
+        y_header_position = 40
+        screen.blit(header, (x_header_position, y_header_position))
+        easy_mode_button.draw_button_sets(screen)
+        medium_mode_button.draw_button_sets(screen)
+        hard_mode_button.draw_button_sets(screen)
+        
+    elif state_m == "computer_ultimate_difficulty":
+        header = Header_title.render("COMPUTER DIFFICULTY", True, WHITE)
+
+        x_header_position = 50
+        y_header_position = 40
+        screen.blit(header, (x_header_position, y_header_position))
+        easy_mode_button.draw_button_sets(screen)
+        medium_mode_button.draw_button_sets(screen)
+        hard_mode_button.draw_button_sets(screen)
         #GAME
     # elif state_m == "game":
     #     game.update()
