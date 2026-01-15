@@ -96,7 +96,7 @@ while is_running:
                     print("HARD MODE!")
 
                     
-                            
+        #ACTIVE BUTTON HOVER                
     if state_m == "start":
         start_button.button_update(mouse_position)
         exit_button.button_update(mouse_position)
@@ -145,7 +145,7 @@ while is_running:
         simple_mode_button.draw_button_sets(screen)
         ultimate_mode_button.draw_button_sets(screen)
         
-        #SIMPLE MODE
+        #SIMPLE MODE SCREEN SECTION
     elif state_m == "game_simple_mode":
         header = Header_title.render("SIMPLE MODE", True, WHITE)
 
@@ -155,7 +155,7 @@ while is_running:
         player_mode_button.draw_button_sets(screen)
         computer_mode_button.draw_button_sets(screen)
         
-        #ULTIMATE MODE
+        #ULTIMATE MODE SCREEN SECTION
     elif state_m == "game_ultimate_mode":
         header = Header_title.render("ULTIMATE MODE", True, WHITE)
 
@@ -165,6 +165,7 @@ while is_running:
         player_mode_button.draw_button_sets(screen)
         computer_mode_button.draw_button_sets(screen)
         
+        #COMPUTER SIMPLE DIFFICULTY SCREEN SECTION
     elif state_m == "computer_simple_difficulty":
         header = Header_title.render("COMPUTER DIFFICULTY", True, WHITE)
 
@@ -175,6 +176,7 @@ while is_running:
         medium_mode_button.draw_button_sets(screen)
         hard_mode_button.draw_button_sets(screen)
         
+        #COMPUTER ULTIMATE DIFFICULTY SCREEN SECTION
     elif state_m == "computer_ultimate_difficulty":
         header = Header_title.render("COMPUTER DIFFICULTY", True, WHITE)
 
