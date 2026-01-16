@@ -9,6 +9,7 @@ class Button():
         self.hover_color = hover_color
         self.current_color = color
         self.font = font
+        self.enabled = False
 
     def draw_button_sets(self, surface):
         # BUTTON SHADOW
@@ -32,4 +33,7 @@ class Button():
             self.current_color = self.color
 
     def is_clicked(self, mouse_position):
-        return self.rect.collidepoint(mouse_position)
+        if self.enabled:
+            return self.rect.collidepoint(mouse_position)
+        else:
+            return False

@@ -5,6 +5,7 @@ import sys
 from tic_tac_toe import Game
 from colors import *
 from button import Button
+from ScreenGUI import Gui
 
 pygame.init()
 
@@ -23,7 +24,7 @@ draw_surface = pygame.Surface((screen_width, screen_height), pygame.SRCALPHA)
 draw_surface.fill((0,0,0,0))
 
 #FONTS CUSTOMIZED
-Header_title = pygame.font.Font('./Font/kids_magazine/Kids Magazine.ttf', 40)
+
 BUTTON_FONT = pygame.font.Font('./Font/grobold/GROBOLD.ttf', 27)
 # BUTTON_FONT = pygame.font.Font('./Font/compro_oro/Compro Oro.ttf', 27)
 
@@ -38,8 +39,11 @@ easy_mode_button = Button(200, 150, 340, 80, "EASY MODE", EASY_MODE_BUTTON_COLOR
 medium_mode_button = Button(200, 250, 340, 80, "MEDIUM MODE", MEDIUM_BUTTON_COLOR, MEDIUM_BUTTON_HOVER_COLOR, BUTTON_FONT)
 hard_mode_button = Button(200, 350, 340, 80, "HARD MODE", HARD_MODE_BUTTON_COLOR, HARD_MODE_BUTTON_HOVER_COLOR, BUTTON_FONT)
 
-state_m = "start"
+# state_m = "start"
 game = Game(draw_surface)
+
+current_gui = Gui("TIC TAC TOE",(180, 100),[start_button, exit_button])
+previous_buttons = [start_button, exit_button]
 
 is_running = True
 while is_running:
@@ -52,144 +56,37 @@ while is_running:
         if event.type == pygame.QUIT:
             is_running = False
         if event.type == pygame.MOUSEBUTTONDOWN:
-            
-            if state_m == "start":
                 if start_button.is_clicked(mouse_position):
-                    state_m = "mode_selection"
+                    
+                    current_gui = Gui("MODE SELECTION",(130, 100),[simple_mode_button, ultimate_mode_button])
+                    print("CLICK")
                 elif exit_button.is_clicked(mouse_position):
                     is_running = False
-                    
-            elif state_m == "mode_selection":
-                if simple_mode_button.is_clicked(mouse_position):
-                    state_m = "game_simple_mode"
+                elif simple_mode_button.is_clicked(mouse_position):
+                    current_gui = Gui("SIMPLE MODE",(180,100),[player_mode_button, computer_mode_button])
                 elif ultimate_mode_button.is_clicked(mouse_position):
-                    state_m = "game_ultimate_mode"
-                    
-            elif state_m == "game_simple_mode":
-                if player_mode_button.is_clicked(mouse_position):
+                    current_gui = Gui("ULTIMATE MODE",(140,100),[player_mode_button, computer_mode_button])
+            
+                elif player_mode_button.is_clicked(mouse_position):
                     print("PLAYER MODE")
                 elif computer_mode_button.is_clicked(mouse_position):
+                    current_gui = Gui("COMPUTER DIFFICULTY",(50,50),[easy_mode_button, medium_mode_button, hard_mode_button])
                     print("COMPUTER MODE")
-                    state_m = "computer_simple_difficulty"
-                    
-            elif state_m == "computer_simple_difficulty":
-                if easy_mode_button.is_clicked(mouse_position):
+                elif easy_mode_button.is_clicked(mouse_position):
                     print("EASY MODE!")
                 elif medium_mode_button.is_clicked(mouse_position):
                     print("MEDIUM MODE!")
                 elif hard_mode_button.is_clicked(mouse_position):
-                    print("HARD MODE!")
-                    
-            elif state_m == "game_ultimate_mode":
-                if player_mode_button.is_clicked(mouse_position):
-                    print("PLAYER MODE") 
-                elif computer_mode_button.is_clicked(mouse_position):
-                    print("COMPUTER MODE")
-                    state_m = "computer_ultimate_difficulty"
-                        
-            elif state_m == "computer_ultimate_difficulty":
-                if easy_mode_button.is_clicked(mouse_position):
-                    print("EASY MODE!")
-                elif medium_mode_button.is_clicked(mouse_position):
-                    print("MEDIUM MODE!")
-                elif hard_mode_button.is_clicked(mouse_position):
-                    print("HARD MODE!")
+                    print("HARD MODE!")    
 
-                    
-        #ACTIVE BUTTON HOVER                
-    if state_m == "start":
-        start_button.button_update(mouse_position)
-        exit_button.button_update(mouse_position)
-
-    elif state_m == "mode_selection":
-        simple_mode_button.button_update(mouse_position)
-        ultimate_mode_button.button_update(mouse_position)
-        
-    elif state_m == "game_simple_mode":
-        player_mode_button.button_update(mouse_position)
-        computer_mode_button.button_update(mouse_position)
-        
-    elif state_m == "game_ultimate_mode":
-        player_mode_button.button_update(mouse_position)
-        computer_mode_button.button_update(mouse_position)
-        
-    elif state_m == "computer_simple_difficulty":
-        easy_mode_button.button_update(mouse_position)
-        medium_mode_button.button_update(mouse_position)
-        hard_mode_button.button_update(mouse_position)
-        
-    elif state_m == "computer_ultimate_difficulty":
-        easy_mode_button.button_update(mouse_position)
-        medium_mode_button.button_update(mouse_position)
-        hard_mode_button.button_update(mouse_position)
-
+    if current_gui.buttons != previous_buttons:
+        for button in previous_buttons:
+            button.enabled = False
+    
+    current_gui.update()
+    previous_buttons = current_gui.buttons
     # screen.fill(DARK_NAVY)
-
-        #START BUTTON
-    if state_m == "start":
-        header = Header_title.render("TIC TAC TOE", True, WHITE)
-
-        x_header_position = 180
-        y_header_position = 100
-        screen.blit(header, (x_header_position, y_header_position))
-        start_button.draw_button_sets(screen)
-        exit_button.draw_button_sets(screen)
-
-        #MODE SELECTION
-    elif state_m == "mode_selection":
-        header = Header_title.render("SELECT MODE", True, WHITE)
-
-        x_header_position = 180
-        y_header_position = 100
-        screen.blit(header, (x_header_position, y_header_position))
-        simple_mode_button.draw_button_sets(screen)
-        ultimate_mode_button.draw_button_sets(screen)
-        
-        #SIMPLE MODE SCREEN SECTION
-    elif state_m == "game_simple_mode":
-        header = Header_title.render("SIMPLE MODE", True, WHITE)
-
-        x_header_position = 180
-        y_header_position = 100
-        screen.blit(header, (x_header_position, y_header_position))
-        player_mode_button.draw_button_sets(screen)
-        computer_mode_button.draw_button_sets(screen)
-        
-        #ULTIMATE MODE SCREEN SECTION
-    elif state_m == "game_ultimate_mode":
-        header = Header_title.render("ULTIMATE MODE", True, WHITE)
-
-        x_header_position = 140
-        y_header_position = 100
-        screen.blit(header, (x_header_position, y_header_position))
-        player_mode_button.draw_button_sets(screen)
-        computer_mode_button.draw_button_sets(screen)
-        
-        #COMPUTER SIMPLE DIFFICULTY SCREEN SECTION
-    elif state_m == "computer_simple_difficulty":
-        header = Header_title.render("COMPUTER DIFFICULTY", True, WHITE)
-
-        x_header_position = 50
-        y_header_position = 40
-        screen.blit(header, (x_header_position, y_header_position))
-        easy_mode_button.draw_button_sets(screen)
-        medium_mode_button.draw_button_sets(screen)
-        hard_mode_button.draw_button_sets(screen)
-        
-        #COMPUTER ULTIMATE DIFFICULTY SCREEN SECTION
-    elif state_m == "computer_ultimate_difficulty":
-        header = Header_title.render("COMPUTER DIFFICULTY", True, WHITE)
-
-        x_header_position = 50
-        y_header_position = 40
-        screen.blit(header, (x_header_position, y_header_position))
-        easy_mode_button.draw_button_sets(screen)
-        medium_mode_button.draw_button_sets(screen)
-        hard_mode_button.draw_button_sets(screen)
-        #GAME
-    # elif state_m == "game":
-    #     game.update()
-    #     screen.blit(draw_surface, (0,0))
+    current_gui.draw(screen=screen)
 
     pygame.display.update()
     clock.tick(60)
