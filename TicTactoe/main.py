@@ -2,10 +2,12 @@
 # py -3.12 F:\DCIT22-Acitivities-main\TicTactoe\main.py
 # py -3.12 F:\pygame\pygame_GUI\startingUI.py
 import sys
-from tic_tac_toe import Game
+from tic_tac_game import Game_logics
+from tic_tac_game import score_system
 from button import *
 from ScreenGUI import Gui
 import pygame
+
 
 pygame.init()
 
@@ -20,16 +22,38 @@ background_image = pygame.image.load('./Images/Background_main.jpg').convert_alp
 draw_surface = pygame.Surface((screen_width, screen_height), pygame.SRCALPHA)
 draw_surface.fill((0, 0, 0, 0))
 
-game = Game(draw_surface)
+
+game = Game_logics(draw_surface)
+score1 = score_system(draw_surface,0,0,0,0,player=1)
+score2 = score_system(draw_surface,0,0,0,0,player=-1)
+
+board1 = score_system(draw_surface,50,100,165,50,0)
+board2 = score_system(draw_surface,540,100,165,50,0)
+#score.game = game
+
+
 current_gui = Gui("TIC TAC TOE",(180, 100),[start_button, exit_button])
 
 previous_buttons = [start_button, exit_button]
 bot_time_elapsed = 0
 
+
+
 is_running = True
 while is_running:
     mouse_position = pygame.mouse.get_pos()
     screen.blit(background_image, (-130, -220))
+    
+
+    board1.draw_board()
+    board2.draw_board()
+    score1.display_score(75,113)
+    score2.display_score(570,113)
+    score1.update_score()
+    score2.update_score()
+    if game.main_tic_tac_toe:
+        score1.game = game
+        score2.game = game
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -59,6 +83,10 @@ while is_running:
                 game.set_mode("ultimate")
             elif player_mode_button.is_clicked(mouse_position):
                 current_gui = Gui(buttons=[menu_button])
+
+                #score = score_system(draw_surface, 0, 0, 0, 0)
+                #score.game = game #clear the score after pressing menu
+
                 game.init_game()
             elif computer_mode_button.is_clicked(mouse_position):
                 current_gui = Gui("COMPUTER DIFFICULTY", (50, 50),
@@ -66,16 +94,28 @@ while is_running:
             elif easy_mode_button.is_clicked(mouse_position):
                 game.init_game(difficulty="easy")
                 current_gui = Gui(buttons=[menu_button])
+                #score = score_system(draw_surface, 0, 0, 0, 0)
+                #score.game = game
             elif medium_mode_button.is_clicked(mouse_position):
                 game.init_game(difficulty="medium")
                 current_gui = Gui(buttons=[menu_button])
+                #score = score_system(draw_surface, 0, 0, 0, 0)
+                #score.game = game
             elif hard_mode_button.is_clicked(mouse_position):
                 game.init_game(difficulty="hard")
                 current_gui = Gui(buttons=[menu_button])
+                diff = "hard"
+                #score = score_system(draw_surface, 0, 0, 0, 0)
+                #score.game = game
             elif menu_button.is_clicked(mouse_position):
                 draw_surface.fill((0, 0, 0, 0))
-                game = Game(draw_surface)
+                game = Game_logics(draw_surface)
                 current_gui = Gui("TIC TAC TOE", (180, 100), [start_button, exit_button])
+                score1 = score_system(draw_surface, 0, 0, 0, 0,player=1)
+                score1.game = game
+
+                score2 = score_system(draw_surface, 0, 0, 0, 0,player=-1)
+                score2.game = game
             elif play_again_button.is_clicked(mouse_position):
 
                 # get previous data to make turns alternate
@@ -85,7 +125,7 @@ while is_running:
 
                 # reinitialize
                 draw_surface.fill((0, 0, 0, 0))
-                game = Game(draw_surface)
+                game = Game_logics(draw_surface)
                 game.put_circle_main = game.put_circle_mini = next_turn
 
                 game.set_mode(mode)

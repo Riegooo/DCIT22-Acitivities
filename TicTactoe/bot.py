@@ -1,4 +1,4 @@
-import tic_tac_toe
+import tic_tac_game as TicTac
 import math
 import random
 
@@ -78,7 +78,7 @@ class Bot:
 
     @staticmethod
     def minimax(grid, unoccupied_tiles, maximizing_player):
-        _, game_state = tic_tac_toe.TicTacToe.check_game(grid)
+        _, game_state = TicTac.TicTacToe.check_game(grid)
         if len(unoccupied_tiles) == 0 or game_state != 0:
             return game_state
 

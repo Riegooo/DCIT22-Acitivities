@@ -1,9 +1,9 @@
 import math
 from bot import Bot
-
 from sound_manager import *
 from colors import *
 import pygame
+
 
 # Tic tac toe class
 class TicTacToe:
@@ -184,12 +184,18 @@ class TicTacToe:
                 width=line_thickness
             )
 
-class Game:
+class Game_logics:
     def __init__(self, screen):
         self.screen = screen
         self.mode = None
         self.bot = None
         self.difficulty = None
+        
+        self.is_running = False
+   
+
+        self.score_x = 0
+        self.score_o = 0
 
         self.main_tic_tac_toe = None
         self.mini_tic_tac_toe = None
@@ -345,3 +351,63 @@ class Game:
                     t.draw(self.screen)
 
             self.main_tic_tac_toe.draw(self.screen)
+
+class score_system(Game_logics):
+    def __init__(self, screen, x, y,width,height,player):
+        self.screen = screen
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+        self.score = 0
+        self.player = player
+        self.already_counted = False
+
+        super().__init__(screen)
+
+
+    def draw_board(self):
+        self.board = pygame.draw.rect(self.screen, (255,255,0), 
+                 [self.x, self.y, self.width, self.height], 
+                 0, border_radius=20)
+        
+
+
+    def add_point(self):
+        self.score += 1
+
+    def update_score(self):
+      
+        if not hasattr(self, "game"):
+            return
+
+        if not self.game.main_tic_tac_toe:
+            self.already_counted = False
+            return
+        
+        if not self.game.main_tic_tac_toe.finished:
+            self.already_counted = False   # reset for next game
+            return
+        
+         # --- IMPORTANT PART ---
+        if self.already_counted:
+            return   # STOP updating again
+
+        winner = self.game.main_tic_tac_toe.winner
+
+        if winner == self.player:   # only update if winner matches this score
+            self.add_point()
+            print(f"Player {self.player} WON!")
+            if self.player == -1 and self.game.difficulty == "hard":
+                legend_sound.play()
+
+        self.already_counted = True
+    
+    def display_score(self, scoreX, scoreY):
+        
+        font = pygame.font.SysFont(None, 40)
+        
+        score = font.render(f'Wins: {self.score}', True, (0, 0, 0))
+
+        
+        self.screen.blit(score, (scoreX, scoreY))

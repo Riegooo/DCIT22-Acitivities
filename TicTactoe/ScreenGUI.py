@@ -9,12 +9,12 @@ class Gui():
         for button in self.buttons:
             button.enabled = True
             
-    def update(self):
+    def update(self): #ACTIVATE HOVER_COLOR BUTTON
         mouse_position = pygame.mouse.get_pos()
         for button in self.buttons:
             button.button_update(mouse_position)
             
-    def draw(self, screen):
+    def draw(self, screen): #DRAW THE BUTTON AND HEADER INTO SCREN
         Header_title = pygame.font.Font('./Font/kids_magazine/Kids Magazine.ttf', 40)
         header = Header_title.render(self.text, True, WHITE)
 
